@@ -23,6 +23,9 @@ defmodule ExCanvasWeb do
 
       import Plug.Conn
       alias ExCanvasWeb.Router.Helpers, as: Routes
+
+      import ExCanvasWeb.Helpers.Rendering
+      action_fallback ExCanvasWeb.FallbackController
     end
   end
 
