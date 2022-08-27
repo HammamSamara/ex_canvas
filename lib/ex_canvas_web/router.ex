@@ -7,6 +7,8 @@ defmodule ExCanvasWeb.Router do
 
   scope "/api", ExCanvasWeb do
     pipe_through :api
+
+    resources "/canvas", Api.CanvasController, only: [:index, :show, :create]
   end
 
   # Enables LiveDashboard only for development
