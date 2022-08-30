@@ -19,6 +19,7 @@ defmodule ExCanvas.Projects.Canvas do
   schema "canvases" do
     field :height, :integer
     field :width, :integer
+    has_many :rectangles, ExCanvas.Projects.Rectangle
 
     timestamps()
   end
@@ -29,7 +30,7 @@ defmodule ExCanvas.Projects.Canvas do
     |> cast(attrs, [:width, :height])
     |> validate_required([:width, :height])
     # For a meaningful canvas, smallest accepted dimensions is 10x10
-    |> validate_number(:width, greater_than: 10)
-    |> validate_number(:height, greater_than: 10)
+    |> validate_number(:width, greater_than_or_equal_to: 10)
+    |> validate_number(:height, greater_than_or_equal_to: 10)
   end
 end

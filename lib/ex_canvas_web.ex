@@ -64,6 +64,7 @@ defmodule ExCanvasWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      import ExCanvasWeb.Helpers.View
       import ExCanvasWeb.ErrorHelpers
       alias ExCanvasWeb.Router.Helpers, as: Routes
     end
