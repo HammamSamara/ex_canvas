@@ -18,4 +18,23 @@ defmodule ExCanvas.ProjectsFixtures do
 
     canvas
   end
+
+  @doc """
+  Generate a rectangle.
+  """
+  def rectangle_fixture(canvas, attrs \\ %{}) do
+    attrs =
+      Enum.into(attrs, %{
+        fill: "@",
+        height: 8,
+        outline: "|",
+        width: 10,
+        x: 2,
+        y: 3
+      })
+
+    {:ok, rectangle} = ExCanvas.Projects.create_rectangle(canvas, attrs)
+
+    rectangle
+  end
 end

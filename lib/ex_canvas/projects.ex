@@ -33,7 +33,7 @@ defmodule ExCanvas.Projects do
       {:error, :not_found}
 
   """
-  def get_canvas(id), do: Repo.fetch(Canvas, id)
+  def get_canvas(id), do: Canvas |> Ecto.Query.preload(:rectangles) |> Repo.fetch(id)
 
   @doc """
   Gets a single canvas.
@@ -70,24 +70,6 @@ defmodule ExCanvas.Projects do
   end
 
   @doc """
-  Updates a canvas.
-
-  ## Examples
-
-      iex> update_canvas(canvas, %{field: new_value})
-      {:ok, %Canvas{}}
-
-      iex> update_canvas(canvas, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_canvas(%Canvas{} = canvas, attrs) do
-    canvas
-    |> Canvas.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a canvas.
 
   ## Examples
@@ -103,16 +85,23 @@ defmodule ExCanvas.Projects do
     Repo.delete(canvas)
   end
 
+  alias ExCanvas.Projects.Rectangle
+
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking canvas changes.
+  Creates a rectangle.
 
   ## Examples
 
-      iex> change_canvas(canvas)
-      %Ecto.Changeset{data: %Canvas{}}
+      iex> create_rectangle(canvas, %{field: value})
+      {:ok, %Rectangle{}}
+
+      iex> create_rectangle(canvas, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
 
   """
-  def change_canvas(%Canvas{} = canvas, attrs \\ %{}) do
-    Canvas.changeset(canvas, attrs)
+  def create_rectangle(%Canvas{} = canvas, attrs \\ %{}) do
+    canvas
+    |> Rectangle.changeset(attrs)
+    |> Repo.insert()
   end
 end
