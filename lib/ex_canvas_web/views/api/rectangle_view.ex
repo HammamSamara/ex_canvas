@@ -8,6 +8,8 @@ defmodule ExCanvasWeb.Api.RectangleView do
   def render("show" <> _, %{rectangle: rectangle}) do
     %{
       id: rectangle.id,
+      x: rectangle.x,
+      y: rectangle.y,
       width: rectangle.width,
       height: rectangle.height,
       outline: rectangle.outline,
