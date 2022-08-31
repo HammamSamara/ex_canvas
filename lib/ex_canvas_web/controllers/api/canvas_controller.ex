@@ -2,6 +2,7 @@ defmodule ExCanvasWeb.Api.CanvasController do
   use ExCanvasWeb, :controller
 
   alias ExCanvas.Projects
+  alias ExCanvas.Sketch.Buffer
 
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -21,6 +22,16 @@ defmodule ExCanvasWeb.Api.CanvasController do
   def create(conn, params) do
     with {:ok, canvas} <- Projects.create_canvas(params) do
       render(conn, :show, canvas: canvas)
+    end
+  end
+
+  @spec sketch(any, map) :: {:error, :not_found} | Plug.Conn.t()
+  def sketch(conn, %{"canvas_id" => id} = _params) do
+    with {:ok, canvas} <- Projects.get_canvas(id),
+         %Buffer{} = buffer <- Buffer.init(canvas) do
+      # render(conn, :show, canvas: canvas)
+      text(conn, Buffer.to_string(buffer))
+      # json(conn, result)
     end
   end
 end

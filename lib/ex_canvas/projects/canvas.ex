@@ -12,14 +12,17 @@ defmodule ExCanvas.Projects.Canvas do
   are able to create, and traverse canvases, but not allow to drop them out of the system.
   """
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias ExCanvas.Projects.Rectangle
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "canvases" do
     field :height, :integer
     field :width, :integer
-    has_many :rectangles, ExCanvas.Projects.Rectangle
+    has_many :rectangles, Rectangle, preload_order: [:id]
 
     timestamps()
   end
@@ -33,4 +36,13 @@ defmodule ExCanvas.Projects.Canvas do
     |> validate_number(:width, greater_than_or_equal_to: 10)
     |> validate_number(:height, greater_than_or_equal_to: 10)
   end
+
+  @type t :: %__MODULE__{
+          id: binary(),
+          height: integer(),
+          width: integer(),
+          rectangles: [Rectangle.t()],
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
 end

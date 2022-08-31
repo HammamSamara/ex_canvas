@@ -1,4 +1,6 @@
 defmodule ExCanvasWeb.Helpers.View do
+  @moduledoc false
+
   def include_if_loaded(output, key, struct, view, name \\ "show.json", assigns \\ %{})
 
   def include_if_loaded(output, _key, %Ecto.Association.NotLoaded{}, _view, _name, _assigns),

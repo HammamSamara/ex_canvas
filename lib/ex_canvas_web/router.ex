@@ -10,6 +10,8 @@ defmodule ExCanvasWeb.Router do
 
     resources "/canvas", Api.CanvasController, only: [:index, :show, :create] do
       resources "/rectangles", Api.RectangleController, only: [:create]
+
+      get "/sketch", Api.CanvasController, :sketch
     end
   end
 
