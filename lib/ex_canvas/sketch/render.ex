@@ -14,15 +14,17 @@ end
 defimpl ExCanvas.Sketch.Render, for: ExCanvas.Projects.Canvas do
   alias ExCanvas.Projects.Canvas
 
+  @fill_blank "_"
+
   @doc """
   Generate the slate in a form of a char list to use as the drawing canvas
 
-  Returns one dimension list filled with an initial char.
+  Returns one dimension list filled with an initial character.
   """
   @spec render(ExCanvas.Projects.Canvas.t()) :: [any()]
   def render(%Canvas{} = canvas), do: generate_buffer(canvas)
 
-  defp generate_buffer(%Canvas{width: w, height: h}), do: generate_buffer([], w * h, '_')
+  defp generate_buffer(%Canvas{width: w, height: h}), do: generate_buffer([], w * h, @fill_blank)
   defp generate_buffer(buffer, 0, _fill), do: buffer
   defp generate_buffer(buffer, i, fill), do: generate_buffer([fill | buffer], i - 1, fill)
 end

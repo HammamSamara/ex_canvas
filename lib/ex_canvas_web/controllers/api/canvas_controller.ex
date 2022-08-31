@@ -28,10 +28,8 @@ defmodule ExCanvasWeb.Api.CanvasController do
   @spec sketch(any, map) :: {:error, :not_found} | Plug.Conn.t()
   def sketch(conn, %{"canvas_id" => id} = _params) do
     with {:ok, canvas} <- Projects.get_canvas(id),
-         %Buffer{} = buffer <- Buffer.init(canvas) do
-      # render(conn, :show, canvas: canvas)
-      text(conn, Buffer.to_string(buffer))
-      # json(conn, result)
+         %Buffer{} = buffer <- Buffer.build(canvas) do
+      text(conn, buffer)
     end
   end
 end

@@ -28,24 +28,26 @@ defmodule ExCanvas.Projects.Rectangle do
     timestamps()
   end
 
+  @required ~w(x y width height)a
+
   @doc false
   def changeset(%Canvas{} = canvas, attrs) do
     changeset =
       canvas
       |> Ecto.build_assoc(:rectangles)
-      |> cast(attrs, [:x, :y, :width, :height, :fill, :outline])
+      |> cast(attrs, @required ++ [:fill, :outline])
 
     changeset
-    |> validate_required([:x, :y, :width, :height])
+    |> validate_required(@required)
     |> validate_required_inclusion([:fill, :outline])
-    # One ascii chat at most for fill and outline
-    |> validate_acceptance_of_none_fill()
+    # One ascii char at most for fill and outline
+    |> set_fill_if_none()
     |> validate_length(:fill, max: 1)
     |> validate_length(:outline, max: 1)
     # For a meaningful rectangle, smallest accepted dimensions is 2x2
     |> validate_number(:width, greater_than: 1, less_than: canvas.width)
     |> validate_number(:height, greater_than: 1, less_than: canvas.height)
-    # Insure rectangles don't go out of parent bounds
+    # Insure rectangles don't go out of parent boundaries
     |> validate_inclusion(:x, 0..max_coordinate(canvas.width, get_change(changeset, :width)),
       message: "out of Canvas boundary"
     )
@@ -54,9 +56,9 @@ defmodule ExCanvas.Projects.Rectangle do
     )
   end
 
-  defp validate_acceptance_of_none_fill(changeset) do
+  defp set_fill_if_none(changeset) do
     # Handy way of accepting "none" as a no fill option
-    # Otherwise, let the flow continues
+    # Otherwise, let the validation flow continue
     case get_change(changeset, :fill) do
       "none" -> put_change(changeset, :fill, " ")
       _ -> changeset
