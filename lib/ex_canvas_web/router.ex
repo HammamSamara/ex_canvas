@@ -8,7 +8,7 @@ defmodule ExCanvasWeb.Router do
   scope "/api", ExCanvasWeb do
     pipe_through :api
 
-    resources "/canvas", Api.CanvasController, only: [:index, :show, :create] do
+    resources "/canvases", Api.CanvasController, only: [:index, :show, :create] do
       resources "/rectangles", Api.RectangleController, only: [:create]
 
       get "/sketch", Api.CanvasController, :sketch
